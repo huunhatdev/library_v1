@@ -18,7 +18,7 @@ class CategoryService {
   }
 
   async updateCategory({ params, body }) {
-    return this.categoryRepository.update(body, { where: { id: params.id } })
+    return this.categoryRepository.findOneAndUpdate({ _id: params.id }, body)
   }
 
   async deleteCategory({ params }) {

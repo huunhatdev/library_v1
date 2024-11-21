@@ -15,12 +15,12 @@ class BaseRepository {
     return await this.model.findOne(query)
   }
 
-  async find(query) {
+  async findAll(query) {
     return await this.model.find(query)
   }
 
   async findOneAndUpdate(query, data) {
-    return await this.model.findOneAndUpdate(query, data)
+    return await this.model.findOneAndUpdate(query, data, { new: true })
   }
 
   async update(query, data) {

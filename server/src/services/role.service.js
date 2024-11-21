@@ -18,11 +18,11 @@ class RoleService {
   }
 
   async updateRole({ params, body }) {
-    return this.roleRepository.update(body, { where: { id: params.id } })
-  }
-
-  async deleteRole({ params }) {
-    return this.roleRepository.delete(params.id)
+    const { permissions } = body
+    return this.roleRepository.findOneAndUpdate(
+      { _id: params.id },
+      { permissions }
+    )
   }
 }
 

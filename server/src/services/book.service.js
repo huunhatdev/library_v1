@@ -1,3 +1,4 @@
+const { default: mongoose } = require('mongoose')
 const { bookRepository } = require('../repositories')
 
 class BookService {
@@ -14,11 +15,16 @@ class BookService {
   }
 
   async createBook({ body }) {
-    return this.bookRepository.create(body)
+    const { quantity } = body
+    const availableQuantity = quantity
+    return this.bookRepository.create({
+      ...body,
+      availableQuantity
+    })
   }
 
   async updateBook({ params, body }) {
-    return this.bookRepository.update(body, { where: { id: params.id } })
+    return this.bookRepository.findOneAndUpdate({ _id: params.id }, body)
   }
 
   async deleteBook({ params }) {

@@ -18,7 +18,7 @@ class UserService {
   }
 
   async updateUser({ params, body }) {
-    return this.userRepository.update(body, { where: { id: params.id } })
+    return this.userRepository.findOneAndUpdate({ _id: params.id }, body)
   }
 
   async deleteUser({ params }) {

@@ -18,7 +18,7 @@ class RecordService {
   }
 
   async updateRecord({ params, body }) {
-    return this.recordRepository.update(body, { where: { id: params.id } })
+    return this.recordRepository.findOneAndUpdate({ _id: params.id }, body)
   }
 
   async deleteRecord({ params }) {
