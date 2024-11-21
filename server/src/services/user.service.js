@@ -6,11 +6,16 @@ class UserService {
   }
 
   async getUsers({ query }) {
-    return this.userRepository.findAll(query)
+    return this.userRepository.findAll(query, '-password')
   }
 
   async getUserById({ params }) {
-    return this.userRepository.findById(params.id)
+    return this.userRepository.findById(params.id, '-password')
+  }
+
+  async getProfile({ user }) {
+    const { id: userId } = user
+    return this.userRepository.findById(userId, '-password')
   }
 
   async createUser({ body }) {
@@ -18,11 +23,34 @@ class UserService {
   }
 
   async updateUser({ params, body }) {
-    return this.userRepository.findOneAndUpdate({ _id: params.id }, body)
+    const { email, fullName } = body
+    if (!email || !fullName) {
+      throw new CustomError(400, 'Email and full name are required')
+    }
+    return this.userRepository.findOneAndUpdate(
+      { _id: params.id },
+      { email, fullName }
+    )
   }
 
   async deleteUser({ params }) {
     return this.userRepository.delete(params.id)
+  }
+
+  async changePassword({ body, user }) {
+    const { id: userId } = user
+    const { oldPassword, newPassword } = body
+
+    const myUser = await this.userRepository.findById(userId)
+    const isMatch = await bcrypt.compare(oldPassword, myUser.password)
+    if (!isMatch) {
+      throw new CustomError(400, 'Old password is incorrect')
+    }
+
+    return this.userRepository.findOneAndUpdate(
+      { _id: userId },
+      { password: bcrypt.hashSync(newPassword, 10) }
+    )
   }
 }
 

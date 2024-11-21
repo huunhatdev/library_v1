@@ -55,6 +55,43 @@ class UserController {
       next(error)
     }
   }
+
+  async changePassword(req, res, next) {
+    try {
+      const data = await userService.changePassword(req)
+      return res
+        .status(200)
+        .json({ success: true, message: 'Password changed successfully', data })
+    } catch (error) {
+      next(error)
+    }
+  }
+
+  async getProfile(req, res, next) {
+    try {
+      const data = await userService.getProfile(req)
+      return res
+        .status(200)
+        .json({ success: true, message: 'Profile fetched successfully', data })
+    } catch (error) {
+      next(error)
+    }
+  }
+
+  async updateProfile(req, res, next) {
+    try {
+      const { email, fullName } = req.body
+      const data = await userService.updateUser({
+        params: { id: req.user.id },
+        body: { email, fullName }
+      })
+      return res
+        .status(200)
+        .json({ success: true, message: 'Profile updated successfully', data })
+    } catch (error) {
+      next(error)
+    }
+  }
 }
 
 module.exports = UserController

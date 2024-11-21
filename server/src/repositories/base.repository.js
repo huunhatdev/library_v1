@@ -7,16 +7,16 @@ class BaseRepository {
     return await this.model.create(data)
   }
 
-  async findById(id) {
-    return await this.model.findById(id)
+  async findById(id, ...rest) {
+    return await this.model.findById(id, ...rest)
   }
 
   async findOne(query) {
     return await this.model.findOne(query)
   }
 
-  async findAll(query) {
-    return await this.model.find(query)
+  async findAll(query, ...rest) {
+    return await this.model.find(query, ...rest)
   }
 
   async findOneAndUpdate(query, data) {
