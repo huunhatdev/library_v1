@@ -1,3 +1,4 @@
+const { default: mongoose } = require('mongoose')
 const { USER_ROLES, PERMISSIONS_TYPES } = require('../constant')
 
 const roleSchema = new mongoose.Schema({
@@ -8,7 +9,8 @@ const roleSchema = new mongoose.Schema({
   },
   permissions: {
     type: [{ type: String, enum: PERMISSIONS_TYPES }],
-    required: true
+    required: true,
+    default: []
   }
 })
 

@@ -1,4 +1,5 @@
 const express = require('express')
+const { recordController } = require('../controllers')
 const recordRouter = express.Router()
 
 recordRouter.get('/', recordController.getRecords)

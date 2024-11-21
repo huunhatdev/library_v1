@@ -12,7 +12,7 @@ class BookController {
     }
   }
 
-  async getUserById(req, res, next) {
+  async getBookById(req, res, next) {
     try {
       const data = await bookService.getBookById(req)
       return res
@@ -23,7 +23,7 @@ class BookController {
     }
   }
 
-  async createUser(req, res, next) {
+  async createBook(req, res, next) {
     try {
       const data = await bookService.createBook(req)
       return res
@@ -34,7 +34,7 @@ class BookController {
     }
   }
 
-  async updateUser(req, res, next) {
+  async updateBook(req, res, next) {
     try {
       const data = await bookService.updateBook(req)
       return res
@@ -45,7 +45,7 @@ class BookController {
     }
   }
 
-  async deleteUser(req, res, next) {
+  async deleteBook(req, res, next) {
     try {
       const data = await bookService.deleteBook(req)
       return res

@@ -14,7 +14,7 @@ class CategoryController {
     }
   }
 
-  async getUserById(req, res, next) {
+  async getCategoryById(req, res, next) {
     try {
       const data = await categoryService.getCategoryById(req)
       return res
@@ -25,7 +25,7 @@ class CategoryController {
     }
   }
 
-  async createUser(req, res, next) {
+  async createCategory(req, res, next) {
     try {
       const data = await categoryService.createCategory(req)
       return res
@@ -36,7 +36,7 @@ class CategoryController {
     }
   }
 
-  async updateUser(req, res, next) {
+  async updateCategory(req, res, next) {
     try {
       const data = await categoryService.updateCategory(req)
       return res
@@ -47,7 +47,7 @@ class CategoryController {
     }
   }
 
-  async deleteUser(req, res, next) {
+  async deleteCategory(req, res, next) {
     try {
       const data = await categoryService.deleteCategory(req)
       return res

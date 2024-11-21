@@ -1,4 +1,4 @@
-const { default: mongooseAutoPopulate } = require('mongoose-autopopulate')
+const { default: mongoose } = require('mongoose')
 const { RECORD_STATUS } = require('../constant')
 
 const recordSchema = new mongoose.Schema(
@@ -36,6 +36,6 @@ const recordSchema = new mongoose.Schema(
   { timestamps: true }
 )
 
-recordSchema.plugin(mongooseAutoPopulate)
+recordSchema.plugin(require('mongoose-autopopulate'))
 
 module.exports = mongoose.model('Record', recordSchema)

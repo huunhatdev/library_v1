@@ -25,7 +25,7 @@ class RecordController {
     }
   }
 
-  async createUser(req, res, next) {
+  async createRecord(req, res, next) {
     try {
       const data = await recordService.createRecord(req)
       return res
@@ -36,7 +36,7 @@ class RecordController {
     }
   }
 
-  async updateUser(req, res, next) {
+  async updateRecord(req, res, next) {
     try {
       const data = await recordService.updateRecord(req)
       return res
@@ -47,7 +47,7 @@ class RecordController {
     }
   }
 
-  async deleteUser(req, res, next) {
+  async deleteRecord(req, res, next) {
     try {
       const data = await recordService.deleteRecord(req)
       return res

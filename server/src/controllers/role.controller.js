@@ -12,7 +12,7 @@ class RoleController {
     }
   }
 
-  async getUserById(req, res, next) {
+  async getRoleById(req, res, next) {
     try {
       const data = await roleService.getRoleById(req)
       return res
@@ -23,7 +23,7 @@ class RoleController {
     }
   }
 
-  async createUser(req, res, next) {
+  async createRole(req, res, next) {
     try {
       const data = await roleService.createRole(req)
       return res
@@ -34,7 +34,7 @@ class RoleController {
     }
   }
 
-  async updateUser(req, res, next) {
+  async updateRole(req, res, next) {
     try {
       const data = await roleService.updateRole(req)
       return res
@@ -45,12 +45,12 @@ class RoleController {
     }
   }
 
-  async deleteUser(req, res, next) {
+  async deleteRole(req, res, next) {
     try {
       const data = await roleService.deleteRole(req)
       return res
         .status(200)
-        .json({ success: true, message: 'User deleted successfully', data })
+        .json({ success: true, message: 'Role deleted successfully', data })
     } catch (error) {
       next(error)
     }

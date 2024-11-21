@@ -1,3 +1,5 @@
+const { default: mongoose } = require('mongoose')
+
 const bookSchema = new mongoose.Schema(
   {
     title: {
@@ -32,4 +34,5 @@ const bookSchema = new mongoose.Schema(
   { timestamps: true }
 )
 
+bookSchema.plugin(require('mongoose-autopopulate'))
 module.exports = mongoose.model('Book', bookSchema)

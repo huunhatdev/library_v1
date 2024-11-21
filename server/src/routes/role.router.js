@@ -1,4 +1,5 @@
 const express = require('express')
+const { roleController } = require('../controllers')
 const roleRouter = express.Router()
 
 roleRouter.get('/', roleController.getRoles)

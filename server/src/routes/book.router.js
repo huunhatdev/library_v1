@@ -1,10 +1,11 @@
 const express = require('express')
-const userRouter = express.Router()
+const { bookController } = require('../controllers')
+const bookRouter = express.Router()
 
-userRouter.get('/', userController.getUser)
-userRouter.get('/:id', userController.getUserById)
-userRouter.post('/', userController.createUser)
-userRouter.put('/:id', userController.updateUser)
-userRouter.delete('/:id', userController.deleteUser)
+bookRouter.get('/', bookController.getBooks)
+bookRouter.get('/:id', bookController.getBookById)
+bookRouter.post('/', bookController.createBook)
+bookRouter.put('/:id', bookController.updateBook)
+bookRouter.delete('/:id', bookController.deleteBook)
 
-module.exports = userRouter
+module.exports = bookRouter

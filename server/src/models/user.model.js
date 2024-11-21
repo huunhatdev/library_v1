@@ -1,4 +1,4 @@
-const { default: mongooseAutoPopulate } = require('mongoose-autopopulate')
+const { default: mongoose } = require('mongoose')
 
 const userSchema = new mongoose.Schema(
   {
@@ -28,5 +28,5 @@ const userSchema = new mongoose.Schema(
   { timestamps: true }
 )
 
-userSchema.plugin(mongooseAutoPopulate)
+userSchema.plugin(require('mongoose-autopopulate'))
 module.exports = mongoose.model('User', userSchema)
