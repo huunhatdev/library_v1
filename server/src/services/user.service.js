@@ -1,4 +1,6 @@
 const { userRepository } = require('../repositories')
+const bcrypt = require('bcrypt')
+const { CustomError } = require('../utils/error.util')
 
 class UserService {
   constructor() {
