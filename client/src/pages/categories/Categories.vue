@@ -51,18 +51,13 @@ const columns: ColumnDef<any>[] = [
   },
   {
     accessorKey: 'name',
-    header: ({ column }) => {
-      return h(Button, {
-        variant: 'ghost',
-        onClick: () => column.toggleSorting(column.getIsSorted() === 'asc'),
-      }, () => ['Category', h(ArrowUpDown, { class: '' })])
-    },
+    header: 'Category',
     enableColumnFilter: true,
   },
   {
     accessorKey: 'description',
-    header: 'Mô tả',
-  },
+    header: 'Description',
+  },  
   {
     id: 'actions',
     enableHiding: false,
@@ -109,7 +104,6 @@ const table = useVueTable({
   },
 })
 
-// Thêm hàm xử lý tìm kiếm
 const handleSearch = (value: string) => {
   table.getColumn('name')?.setFilterValue(value)
 }
@@ -120,9 +114,9 @@ const handleSearch = (value: string) => {
     <div class="flex gap-2 items-center py-4">
       <Input
         class="max-w-52"
-        placeholder="Tìm kiếm danh mục..."
+        placeholder="Search category..."
         :model-value="table.getColumn('name')?.getFilterValue() as string"
-        @input="(e) => handleSearch((e.target as HTMLInputElement).value)"
+        @input="(e: any) => handleSearch((e.target as HTMLInputElement).value)"
       />
       <Button @click="isEditModalOpen = true">
         Create
@@ -155,7 +149,7 @@ const handleSearch = (value: string) => {
               :colspan="columns.length"
               class="h-24 text-center"
             >
-              Không có dữ liệu.
+              No data.
             </TableCell>
           </TableRow>
         </TableBody>

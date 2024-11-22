@@ -46,9 +46,9 @@ const emit = defineEmits<{
 
 const formSchema = toTypedSchema(
   z.object({
-    fullName: z.string().min(1, "Vui lòng nhập tên"),
-    email: z.string().min(1, "Vui lòng nhập email"),
-    role: z.string().min(1, "Vui lòng chọn quyền"),
+    fullName: z.string().min(1, "Please enter full name"),
+    email: z.string().min(1, "Please enter email"),
+    role: z.string().min(1, "Please select role"),
   })
 );
 
@@ -77,7 +77,7 @@ const { data } = useQuery({
       return response.data.data;
     } catch (error: any) {
       if (error.response?.status === 403) {
-        alert('Bạn không có quyền truy cập');
+        alert('You do not have permission to access');
         router.push('/login');
       }
       return [];
@@ -106,7 +106,7 @@ const customerQuery = useQuery({
       return response.data;
     } catch (error: any) {
       if (error.response?.status === 403) {
-        alert('Bạn không có quyền truy cập');
+        alert('You do not have permission to access');
         router.push('/login');
       }
       throw error;
@@ -156,12 +156,12 @@ const mutation = useMutation({
     });
   },
   onSuccess: async () => {
-    alert(props.isEdit ? 'Cập nhật khách hàng thành công!' : 'Thêm khách hàng thành công!');
+    alert(props.isEdit ? 'Update customer successfully!' : 'Add new customer successfully!');
     await queryClient.invalidateQueries({ queryKey: ['customers'] });
     await router.push('/customers');
   },
   onError: (error: any) => {
-    alert(error.response?.data?.message || `Đã xảy ra lỗi khi ${props.isEdit ? 'cập nhật' : 'thêm'} khách hàng`);
+    alert(error.response?.data?.message || `An error occurred when ${props.isEdit ? 'update' : 'add'} customer`);
   }
 });
 
@@ -175,18 +175,18 @@ const onSubmit = form.handleSubmit((values) => {
   <Dialog :open="open" @update:open="emit('update:open', $event)">
     <DialogContent class="sm:max-w-md">
       <DialogHeader>
-        <DialogTitle>{{ props.isEdit ? 'Chỉnh sửa khách hàng' : 'Thêm khách hàng mới' }}</DialogTitle>
+        <DialogTitle>{{ props.isEdit ? 'Update customer' : 'Add new customer' }}</DialogTitle>
       </DialogHeader>
       
       <form @submit="onSubmit" class="flex flex-col gap-4">
         <FormField v-slot="{ componentField }" name="fullName">
           <FormItem class="flex flex-col items-start gap-2">
-            <FormLabel>Tên</FormLabel>
+            <FormLabel>Full name</FormLabel>
             <FormControl>
               <Input
                 class="w-full mt-0"
                 type="text"
-                placeholder="Nhập tên"
+                placeholder="Enter full name"
                 v-bind="componentField"
               />
             </FormControl>
@@ -201,7 +201,7 @@ const onSubmit = form.handleSubmit((values) => {
               <Input
                 class="w-full mt-0"
                 type="text"
-                placeholder="Nhập email"
+                placeholder="Enter email"
                 v-bind="componentField"
               />
             </FormControl>
@@ -211,7 +211,7 @@ const onSubmit = form.handleSubmit((values) => {
 
         <FormField v-slot="{ componentField }" name="role">
           <FormItem class="flex flex-col items-start gap-2">
-            <FormLabel>Quyền</FormLabel>
+            <FormLabel>Role</FormLabel>
             <FormControl>
               <select
                 class="w-full mt-0 p-2 border rounded-md"
@@ -227,7 +227,7 @@ const onSubmit = form.handleSubmit((values) => {
           </FormItem>
         </FormField>
 
-        <Button type="submit">{{ props.isEdit ? 'Cập nhật' : 'Thêm khách hàng' }}</Button>
+        <Button type="submit">{{ props.isEdit ? 'Update' : 'Add new customer' }}</Button>
       </form>
     </DialogContent>
   </Dialog>

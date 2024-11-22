@@ -53,7 +53,6 @@ const onSubmit = form.handleSubmit(async (values) => {
       localStorage.setItem('token', token);
       authStore.setToken(token);
 
-      // Gọi API profile và cập nhật store
       try {
         const profileResponse = await axios.get(
           `${import.meta.env.VITE_API_URL}/profile`,
@@ -82,38 +81,58 @@ const onSubmit = form.handleSubmit(async (values) => {
 </script>
 
 <template>
-  <div class="flex flex-col items-center justify-center h-screen">
-    <form @submit="onSubmit" class="flex flex-col gap-4 w-full max-w-md">
-      <FormField v-slot="{ componentField }" name="username">
-        <FormItem class="flex flex-col items-start gap-2">
-          <FormLabel>Username</FormLabel>
-          <FormControl>
-            <Input
-              class="w-full mt-0"
-              type="text"
-              placeholder="username"
-              v-bind="componentField"
-            />
-          </FormControl>
-          <FormMessage />
-        </FormItem>
-      </FormField>
-      <FormField v-slot="{ componentField }" name="password">
-        <FormItem class="flex flex-col items-start gap-2">
-          <FormLabel>Password</FormLabel>
-          <FormControl>
-            <Input
-              class="w-full mt-0"
-              type="password"
-              placeholder="password"
-              v-bind="componentField"
-            />
-          </FormControl>
-          <FormMessage />
-        </FormItem>
-      </FormField>
-      <Button type="submit"> Login </Button>
-      <Button type="button" @click="router.push({ name: 'Register' })"> Register </Button>
-    </form>
+  <div class="flex flex-col items-center justify-center min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-md w-full space-y-8 bg-white p-8 rounded-lg shadow-md">
+      <div class="text-center">
+        <h2 class="mt-6 text-3xl font-bold text-gray-900">Login</h2>
+        <p class="mt-2 text-sm text-gray-600">
+          Or
+          <a @click="router.push({ name: 'Register' })" class="font-medium text-blue-600 hover:text-blue-500 cursor-pointer">
+            register new account
+          </a>
+        </p>
+      </div>
+
+      <form @submit="onSubmit" class="mt-8 space-y-6">
+        <FormField v-slot="{ componentField }" name="username">
+          <FormItem class="flex flex-col items-start gap-2">
+            <FormLabel class="text-gray-700 font-medium">Username</FormLabel>
+            <FormControl>
+              <Input
+                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
+                type="text"
+                placeholder="Enter username"
+                v-bind="componentField"
+              />
+            </FormControl>
+            <FormMessage class="text-red-500 text-sm" />
+          </FormItem>
+        </FormField>
+
+        <FormField v-slot="{ componentField }" name="password">
+          <FormItem class="flex flex-col items-start gap-2">
+            <FormLabel class="text-gray-700 font-medium">Password</FormLabel>
+            <FormControl>
+              <Input
+                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
+                type="password"
+                placeholder="Enter password"
+                v-bind="componentField"
+              />
+            </FormControl>
+            <FormMessage class="text-red-500 text-sm" />
+          </FormItem>
+        </FormField>
+
+        <div class="space-y-4">
+          <Button 
+            type="submit"
+            class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+          >
+            Login
+          </Button>
+        </div>
+      </form>
+    </div>
   </div>
 </template>

@@ -38,6 +38,7 @@ import axios from 'axios'
 import { useQuery } from '@tanstack/vue-query'
 import DropdownAction from './components/DropdownAction.vue'
 import BookForm from './components/BookForm.vue'
+import { useAuthStore } from '../auth/auth'
 
 export interface Book {
   _id: string
@@ -65,38 +66,28 @@ const { data, isLoading } = useQuery({
 const columns: ColumnDef<Book>[] = [
   {
     id: 'index',
-    header: () => h('div', { class: 'text-center' }, 'No.'),
-    cell: ({ row }) => h('div', { class: 'text-center' }, (row.index + 1).toString()),
+    header: 'No.',
+    cell: ({ row }) => (row.index + 1).toString(),
     enableSorting: false,
     enableHiding: false,
   },
   {
     accessorKey: 'title',
-    header: ({ column }) => {
-      return h(Button, {
-        variant: 'ghost',
-        onClick: () => column.toggleSorting(column.getIsSorted() === 'asc'),
-      }, () => ['Title', h(ArrowUpDown, { class: 'text-left' })])
-    },
-    cell: ({ row }) => h('div', { class: 'text-left' }, row.getValue('title')),
+    header: 'Title',
     enableColumnFilter: true,
   },
   {
     accessorKey: 'quantity',
-    header: ({ column }) => {
-      return h(Button, {
-        variant: 'ghost',
-        onClick: () => column.toggleSorting(column.getIsSorted() === 'asc'),
-      }, () => ['Quantity', h(ArrowUpDown, { class: '' })])
-    },
-    cell: ({ row }) => h('div', { class: 'px-4 text-center' }, row.getValue('quantity')),
+    header: 'Quantity',
   },
   {
     id: 'actions',
     enableHiding: false,
-    header: () => h('div', { class: 'w-[100px] text-center' }, 'Actions'),
     cell: ({ row }) => {
       const book = row.original
+      if (authStore.getUserInfo?.role?.name !== 'admin') {
+        return null
+      }
       return h('div', { class: 'text-center' }, h(DropdownAction, {
         book,
         onExpand: row.toggleExpanded,
@@ -140,6 +131,7 @@ const table = useVueTable({
 
 const isEditModalOpenBook = ref(false);
 
+const authStore = useAuthStore();
 </script>
 
 <template>
@@ -151,7 +143,7 @@ const isEditModalOpenBook = ref(false);
         :model-value="table.getColumn('title')?.getFilterValue() as string"
         @update:model-value="table.getColumn('title')?.setFilterValue($event)"
       />
-      <Button @click="isEditModalOpenBook = true">
+      <Button @click="isEditModalOpenBook = true" v-if="authStore.getUserInfo?.role?.name === 'admin'">
         Create
       </Button>
     </div>

@@ -69,9 +69,6 @@ const handleDelete = () => {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
-        <DropdownMenuItem @click="emit('expand')">
-          View details
-        </DropdownMenuItem>
         <DropdownMenuItem @click="handleEdit">
           Edit
         </DropdownMenuItem>

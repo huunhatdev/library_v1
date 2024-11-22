@@ -49,11 +49,11 @@ const emit = defineEmits<{
 
 const formSchema = toTypedSchema(
   z.object({
-    title: z.string().min(1, "Vui lòng nhập tên sách"),
-    author: z.string().min(1, "Vui lòng nhập tên tác giả"),
-    categories: z.array(z.string()).min(1, "Vui lòng chọn ít nhất một danh mục"),
+    title: z.string().min(1, "Please enter book title"),
+    author: z.string().min(1, "Please enter author name"),
+    categories: z.array(z.string()).min(1, "Please select at least one category"),
     publishedYear: z.number().min(1900).max(new Date().getFullYear()),
-    quantity: z.number().min(1, "Số lượng phải lớn hơn 0"),
+    quantity: z.number().min(1, "Quantity must be greater than 0"),
   })
 );
 
@@ -84,7 +84,7 @@ const { data } = useQuery({
       return response.data.data;
     } catch (error: any) {
       if (error.response?.status === 403) {
-        alert('Bạn không có quyền truy cập');
+        alert('You do not have permission to access');
         router.push('/login');
       }
       return [];
@@ -113,7 +113,7 @@ const bookQuery = useQuery({
       return response.data;
     } catch (error: any) {
       if (error.response?.status === 403) {
-        alert('Bạn không có quyền truy cập');
+        alert('You do not have permission to access');
         router.push('/login');
       }
       throw error;
@@ -158,12 +158,12 @@ const mutation = useMutation({
     });
   },
   onSuccess: async () => {
-    alert(props.isEdit ? 'Cập nhật sách thành công!' : 'Thêm sách thành công!');
+    alert(props.isEdit ? 'Update book successfully!' : 'Add new book successfully!');
     await queryClient.invalidateQueries({ queryKey: ['books'] });
     await router.push('/books');
   },
   onError: (error: any) => {
-    alert(error.response?.data?.message || `Đã xảy ra lỗi khi ${props.isEdit ? 'cập nhật' : 'thêm'} sách`);
+    alert(error.response?.data?.message || `An error occurred when ${props.isEdit ? 'update' : 'add'} book`);
   }
 });
 
@@ -177,18 +177,18 @@ const onSubmit = form.handleSubmit((values) => {
   <Dialog :open="open" @update:open="emit('update:open', $event)">
     <DialogContent class="sm:max-w-md">
       <DialogHeader>
-        <DialogTitle>{{ props.isEdit ? 'Chỉnh sửa sách' : 'Thêm sách mới' }}</DialogTitle>
+        <DialogTitle>{{ props.isEdit ? 'Update book' : 'Add new book' }}</DialogTitle>
       </DialogHeader>
       
       <form @submit="onSubmit" class="flex flex-col gap-4">
         <FormField v-slot="{ componentField }" name="title">
           <FormItem class="flex flex-col items-start gap-2">
-            <FormLabel>Tên sách</FormLabel>
+            <FormLabel>Title</FormLabel>
             <FormControl>
               <Input
                 class="w-full mt-0"
                 type="text"
-                placeholder="Nhập tên sách"
+                placeholder="Enter book title"
                 v-bind="componentField"
                 :value="form.values.title"
               />
@@ -199,12 +199,12 @@ const onSubmit = form.handleSubmit((values) => {
 
         <FormField v-slot="{ componentField }" name="author">
           <FormItem class="flex flex-col items-start gap-2">
-            <FormLabel>Tác giả</FormLabel>
+            <FormLabel>Author</FormLabel>
             <FormControl>
               <Input
                 class="w-full mt-0"
                 type="text"
-                placeholder="Nhập tên tác giả"
+                placeholder="Enter author name"
                 v-bind="componentField"
                 :value="form.values.author"
               />
@@ -215,7 +215,7 @@ const onSubmit = form.handleSubmit((values) => {
 
         <FormField v-slot="{ componentField }" name="publishedYear">
           <FormItem class="flex flex-col items-start gap-2">
-            <FormLabel>Năm xuất bản</FormLabel>
+            <FormLabel>Published year</FormLabel>
             <FormControl>
               <Input
                 class="w-full mt-0"
@@ -232,7 +232,7 @@ const onSubmit = form.handleSubmit((values) => {
 
         <FormField v-slot="{ componentField }" name="quantity">
           <FormItem class="flex flex-col items-start gap-2">
-            <FormLabel>Số lượng</FormLabel>
+            <FormLabel>Quantity</FormLabel>
             <FormControl>
               <Input
                 class="w-full mt-0"
@@ -248,7 +248,7 @@ const onSubmit = form.handleSubmit((values) => {
 
         <FormField v-slot="{ componentField }" name="categories">
           <FormItem class="flex flex-col items-start gap-2">
-            <FormLabel>Danh mục</FormLabel>
+            <FormLabel>Categories</FormLabel>
             <FormControl>
               <select
                 multiple
@@ -265,7 +265,7 @@ const onSubmit = form.handleSubmit((values) => {
           </FormItem>
         </FormField>
 
-        <Button type="submit">{{ props.isEdit ? 'Cập nhật' : 'Thêm sách' }}</Button>
+        <Button type="submit">{{ props.isEdit ? 'Update' : 'Add new book' }}</Button>
       </form>
     </DialogContent>
   </Dialog>

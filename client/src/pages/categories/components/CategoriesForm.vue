@@ -18,7 +18,6 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 
-// Add this interface before the formSchema
 interface CategoryResponse {
   data: {
     name: string;
@@ -30,8 +29,8 @@ interface CategoryResponse {
 
 const formSchema = toTypedSchema(
   z.object({
-    name: z.string().min(1, "Vui lòng nhập tên danh mục"),
-    description: z.string().min(1, "Vui lòng nhập mô tả"),
+    name: z.string().min(1, "Please enter category name"),
+    description: z.string().min(1, "Please enter description"),
   })
 );
 
@@ -57,23 +56,8 @@ const emit = defineEmits<{
   'update:open': [value: boolean];
 }>();
 
-// Add queryClient
 const queryClient = useQueryClient();
 
-// Add query to get category detail
-// const categoryQuery = useQuery({
-//   queryKey: ['category', props.id],
-//   queryFn: async () => {
-//     if (!props.id) return null;
-//     const response = await axios.get(`${import.meta.env.VITE_API_URL}/category/${props.id}`, {
-//       headers: {
-//         Authorization: `Bearer ${token}`
-//       }
-//     });
-//     return response.data;
-//   },
-//   enabled: !!props.id,
-// });
 const categoryQuery = useQuery({
   queryKey: ['category', props.id],
   queryFn: async () => {
@@ -86,7 +70,7 @@ const categoryQuery = useQuery({
       return response.data;
     } catch (error: any) {
       if (error.response?.status === 403) {
-        alert('Bạn không có quyền truy cập');
+        alert('You do not have permission to access');
         router.push('/login');
       }
       throw error;
@@ -108,17 +92,6 @@ watch(
   },
   { immediate: true }
 );
-// Update form initialization with watch
-// watch(categoryQuery.data, (newData) => {
-//   if (newData) {
-//     form.setValues({
-//       name: newData.name,
-//       description: newData.description,
-//     });
-//   }
-// });
-
-// Create/Edit mutation
 const mutation = useMutation({
   mutationFn: async (values: typeof form.values) => {
     const url = `${import.meta.env.VITE_API_URL}/category${props.isEdit ? `/${props.id}` : ''}`;
@@ -130,13 +103,13 @@ const mutation = useMutation({
     });
   },
   onSuccess: async () => {
-    alert(props.isEdit ? 'Cập nhật danh mục thành công!' : 'Thêm danh mục thành công!');
+    alert(props.isEdit ? 'Update category successfully!' : 'Add new category successfully!');
     await queryClient.invalidateQueries({ queryKey: ['categories'] });
     emit('update:open', false);
     router.push('/categories');
   },
   onError: (error: any) => {
-    alert(error.response?.data?.message || `Đã xảy ra lỗi khi ${props.isEdit ? 'cập nhật' : 'thêm'} danh mục`);
+    alert(error.response?.data?.message || `An error occurred when ${props.isEdit ? 'update' : 'add'} category`);
   }
 });
 
@@ -149,18 +122,18 @@ const onSubmit = form.handleSubmit((values) => {
   <Dialog :open="open" @update:open="emit('update:open', $event)">
     <DialogContent class="sm:max-w-[425px]">
       <DialogHeader>
-        <DialogTitle>{{ isEdit ? 'Chỉnh sửa danh mục' : 'Thêm danh mục mới' }}</DialogTitle>
+        <DialogTitle>{{ isEdit ? 'Update category' : 'Add new category' }}</DialogTitle>
       </DialogHeader>
 
       <form @submit="onSubmit" class="space-y-4">
         <FormField v-slot="{ componentField }" name="name">
           <FormItem class="flex flex-col items-start gap-2">
-            <FormLabel>Tên danh mục</FormLabel>
+            <FormLabel>Category</FormLabel>
             <FormControl>
               <Input
                 class="w-full mt-0"
                 type="text"
-                placeholder="Nhập tên danh mục"
+                placeholder="Enter category name"
                 v-bind="componentField"
                 :value="form.values.name"
               />
@@ -171,12 +144,12 @@ const onSubmit = form.handleSubmit((values) => {
 
         <FormField v-slot="{ componentField }" name="description">
           <FormItem class="flex flex-col items-start gap-2">
-            <FormLabel>Mô tả</FormLabel>
+            <FormLabel>Description</FormLabel>
             <FormControl>
               <Input
                 class="w-full mt-0"
                 type="text"
-                placeholder="Nhập mô tả"
+                placeholder="Enter description"
                 v-bind="componentField"
                 :value="form.values.description"
               />
@@ -185,7 +158,7 @@ const onSubmit = form.handleSubmit((values) => {
           </FormItem>
         </FormField>
 
-        <Button type="submit">{{ isEdit ? 'Cập nhật' : 'Thêm danh mục' }}</Button>
+        <Button type="submit">{{ isEdit ? 'Update' : 'Add new category' }}</Button>
       </form>
     </DialogContent>
   </Dialog>
