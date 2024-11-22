@@ -36,7 +36,7 @@ class UserService {
   }
 
   async deleteUser({ params }) {
-    return this.userRepository.delete(params.id)
+    return this.userRepository.delete({ _id: params.id })
   }
 
   async changePassword({ body, user }) {
