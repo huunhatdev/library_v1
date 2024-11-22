@@ -10,7 +10,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import EditCustomerModal from './components/EditCustomerModal.vue'
 
 enum Role {
@@ -27,7 +27,7 @@ interface Customer {
 
 const isEditModalOpen = ref(false)
 const selectedCustomer = ref<Customer | null>(null)
-
+const searchQuery = ref('')
 
 const token = localStorage.getItem('token')
 const queryClient = useQueryClient()
@@ -49,6 +49,14 @@ const { data } = useQuery({
   initialData: []
 });
 
+const filteredCustomers = computed(() => {
+  if (!data.value) return []
+  return data.value.filter(customer => 
+    customer.username.toLowerCase().includes(searchQuery.value.toLowerCase()) ||
+    customer.email.toLowerCase().includes(searchQuery.value.toLowerCase())
+  )
+})
+
 const handleDelete = async (customerId: string) => {
   try {
     await axios.delete(`${import.meta.env.VITE_API_URL}/user/${customerId}`, {
@@ -67,8 +75,16 @@ const handleDelete = async (customerId: string) => {
 
 <template>
   <div class="space-y-8">
-    <div>
+    <div class="flex justify-between items-center">
       <h1 class="text-2xl font-bold">Customers</h1>
+      <div class="w-72">
+        <input
+          v-model="searchQuery"
+          type="text"
+          placeholder="Search customers..."
+          class="w-full px-4 py-2 border rounded-md"
+        />
+      </div>
     </div>
 
     <div class="rounded-md border">
@@ -82,7 +98,7 @@ const handleDelete = async (customerId: string) => {
           </TableRow>
         </TableHeader>
         <TableBody>
-          <TableRow v-for="(customer, index) in data" :key="customer.id">
+          <TableRow v-for="(customer, index) in filteredCustomers" :key="customer.id">
             <TableCell>{{ index + 1 }}</TableCell>
             <TableCell>{{ customer.username }}</TableCell>
             <TableCell>{{ customer.email }}</TableCell>

@@ -136,16 +136,21 @@ const authStore = useAuthStore();
 
 <template>
   <div class="w-full">
-    <div class="flex gap-2 items-center py-4">
-      <Input
+    <div class="flex gap-2 items-center py-4 justify-between">
+      <div class="flex items-center gap-2 justify-center w-full">
+        <h1 class="text-2xl font-bold text-center">Books</h1>
+      </div>
+      <div class="flex items-center gap-2">
+        <Input
         class="max-w-52"
         placeholder="Search books..."
         :model-value="table.getColumn('title')?.getFilterValue() as string"
         @update:model-value="table.getColumn('title')?.setFilterValue($event)"
       />
-      <Button @click="isEditModalOpenBook = true" v-if="authStore.getUserInfo?.role?.name === 'admin'">
-        Create
+      <Button v-if="authStore.getUserInfo?.role?.name === 'admin'" @click="isEditModalOpenBook = true">
+        Tạo mới
       </Button>
+      </div>
     </div>
     <div class="rounded-md border">
       <Table>
